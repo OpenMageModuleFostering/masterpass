@@ -1,0 +1,452 @@
+<?php
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$preCheckout = $this->getPrecheckoutdata();
+
+if ($preCheckout) {
+    ?>
+
+    <?php
+    $prefix = '';
+    if (Mage::getStoreConfig('masterpass/config/environment') === 'sandbox') {
+        $prefix .= Mage::getStoreConfig('masterpass/config/environment') . ".";
+    }
+    ?>
+
+    <script type="text/javascript" src="https://<?php echo $prefix; ?>masterpass.com/lightbox/Switch/integration/MasterPass.client.js"></script>
+    <?php echo $this->getMessagesBlock()->toHtml() ?>
+    <h1><?php echo $this->__('Checkout With MasterPass') ?></h1>
+    <div class="preCheckou-main">
+        <!-- profile -->
+
+        <?php if (Mage::getStoreConfig('masterpass/config/userflows') == '3') { ?>
+            <div class="fieldset">
+                <form id="mpForm" class="scaffold-form" method="post" action="<?php echo $this->getPostexpresscheckout(); ?>" >
+                    <input type="hidden" name="longaccesstoken" value="<?php echo $this->getLongToken(); ?>"/>
+                    <input type="hidden" name="precheckoutid" value="<?php echo $this->getPreCheckoutTranId(); ?>"/> 
+                    <input type="hidden" name="walletid" value="<?php echo $this->getConWalletId(); ?>"/>
+                <?php } ?>
+                <div class="masterpass-form-left">
+                    <ul class="form-list">  
+                        <?php $profile = $this->getPreProfile(); ?>
+                        <?php if ($profile['FirstName']) { ?>
+                            <li class="fields"> 
+                                <h3 class="mp-title"><?php echo $this->__('Profile') ?></h3>
+                                <div class="input-box"><?php echo $profile['FirstName'] . ' ' . $profile['LastName']; ?></div>
+                            </li>
+                        <?php } ?>
+                        <!-- address -->
+                        <?php if ($this->canbeShipped() && !Mage::getStoreConfig('masterpass/config/cfaddress')): ?>
+                            <?php echo $this->getChildHtml("shippingform"); ?>
+                        <?php endif; ?>
+                        <?php $shippingAddresses = $this->getPreAddress(); ?>
+                        <?php if ($shippingAddresses) { ?>
+                            <li class="fields">
+                                <div class="field">
+                                    <h3 class="mp-title"><?php echo $this->__('Shipping Address') ?></h3>
+                                    <div class="input-box">
+
+                                        <select id="addressSelect" name="address">
+                                            <?php if (is_array($shippingAddresses)) { ?>
+                                                <?php foreach ($shippingAddresses as $address) { ?>
+                                                    <?php
+                                                    //check address line2 
+                                                    if (!is_array($address['Line2'])) {
+                                                        $lin2 = '<br/>' . $address['Line2'] . '<br/>';
+                                                    } else {
+                                                        $lin2 = '<br/>';
+                                                    }
+                                                    $state = Mage::getModel('masterpass/masterpass')->getRemoveDash($address['CountrySubdivision']);
+                                                    ?>
+                                                    <option <?php
+                                                    if ($address['SelectedAsDefault'] == 'true') {
+                                                        echo 'selected';
+                                                    }
+                                                    ?> detail="<?php echo $address['RecipientName'] . '<br/>' . $address['Line1'] . $lin2 . $address['City'] . ',' . $state . ' ' . $address['PostalCode'] . ', ' . $address['Country'] ?>" value="<?php echo $address['AddressId']; ?>"><?php echo $address['Country'] . ' : ' . $address['Line1']; ?></option>
+                                                    <?php } ?>
+                                                <?php } else { ?>
+                                                <option value="<?php echo $shippingAddresses['AddressId']; ?>"><?php echo $shippingAddresses['Country'] . ' : ' . $shippingAddresses['Line1']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div id="selected-address" class="pre-data"></div>
+                                </div>
+                            </li>
+                        <?php } ?>
+                        <!-- cards-->
+                        <?php $cards = $this->getPreCards(); ?>
+
+                        <?php if ($cards) { ?>
+                            <li class="fields">
+                                <div class="field">
+                                    <h3 class="mp-title"><?php echo $this->__('Payment') ?></h3>
+                                    <div class="input-box">
+                                        <div class="masterpass-logo"><img  src="https://www.mastercard.com/mc_us/wallet/img/en/US/mp_mc_acc_<?php echo Mage::getStoreConfig('masterpass/config/acceptancemark') ?>_gif.gif" alt=" MasterPass Checkout"/></div>
+                                        <div class="partner-logo"><img src="<?php echo $this->partnerLogo() ?>" height="<?php echo Mage::getStoreConfig('masterpass/config/acceptancemark') ?>" /></div>
+                                    </div>
+                                    <div class="input-box">
+                                        <select id="cardSelect" name="cards">
+                                            <?php if (is_array($cards)) { ?>
+                                                <?php foreach ($cards as $card) { ?>
+                                                    <?php if (empty($card['BrandName'])) $card['BrandName'] = 'undefined'; ?>
+                                                    <option <?php
+                                                    if ($card['SelectedAsDefault'] == 'true') {
+                                                        echo 'selected';
+                                                    }
+                                                    ?> detail="Name: <?php
+                                                        echo $card['CardHolderName'];
+                                                        if ($card['ExpiryMonth']) {
+                                                            echo '<br/>Exp: ' . $card['ExpiryMonth'] . '/' . $card['ExpiryYear'];
+                                                        } echo '<br/>Card: XXXX-XXXX-XXXX-' . $card['LastFour'];
+                                                        ?>" value="<?php echo $card['CardId']; ?>"><?php echo $card['BrandName'] . ' - ' . $card['LastFour']; ?></option>
+                                                    <?php } ?>
+                                                <?php } else { ?>
+                                                <option detail="Name: <?php echo $card['CardHolderName'] . '<br/>Exp: ' . $card['ExpiryMonth'] . '/' . $card['ExpiryYear'] . '<br/>Card: XXXX-XXXX-XXXX-' . $card['LastFour']; ?>" value="<?php echo $cards['CardId']; ?>"><?php echo $cards['BrandName'] . ' - ' . $cards['LastFour']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div id="selected-card" class="pre-data"></div>
+                                </div>
+                            </li>
+                        <?php } ?>
+
+                        <!-- Reward program -->
+                        <?php $rewardPrograms = $this->getPreReward(); ?>
+                        <?php if (!empty($rewardPrograms)) { ?>
+                            <li class="fields">
+                                <div class="field">
+                                    <h3 class="mp-title"><?php echo $this->__('Reward') ?></h3>
+                                    <div class="input-box">
+                                        <select id="rewardSelect" name="rewardprogram">
+                                            <?php foreach ($rewardPrograms as $reward) { ?>
+                                                <option detail="<?php echo 'Reward Name: ' . $reward['RewardName']; ?>" value="<?php echo $reward['RewardProgramId']; ?>"><?php echo $reward['RewardNumber']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <div id="selected-reward" class="pre-data"></div>
+                                </div>
+                            </li>
+                        <?php } ?>
+
+                        <!-- <li class="fields">Or</li>
+                         <li class="fields">
+                             <button class="button btn-proceed-checkout btn-checkout" onclick="window.location = '<?php echo $this->getUrl('checkout/onepage', array('_secure' => true)); ?>';" title="Proceed to Checkout" type="button">
+                                 <span>
+                                     <span>Proceed to Checkout</span>
+                                 </span>
+                             </button>
+                         </li>-->
+                    </ul>
+                </div>
+                <div class="masterpass-form-right">
+                    <?php if ($this->canbeShipped() && Mage::getStoreConfig('masterpass/config/userflows') == '3'): ?>
+                        <?php echo $this->getChildHtml("mpshippingmethod"); ?>
+                    <?php elseif ($this->canbeShipped() && Mage::getStoreConfig('masterpass/config/userflows') == '2'): ?>
+                        <?php echo $this->getChildHtml("mpshippingmethod"); ?>
+                    <?php endif; ?>
+                    <?php echo $this->getChildHtml("details"); ?>
+                    <ul class="masterpass-checkout-block">
+                        <li>
+                            <div id="buy-with-masterpass" class="input-box">
+                                <?php if (Mage::getStoreConfig('masterpass/config/userflows') == '3') { ?>
+                                    <input id="expresscheckout" class="expresscheckout-button validation-passed" title="Buy With MasterPass" type="image" src="https://www.mastercard.com/mc_us/wallet/img/mcpp_wllt_btn_chk_<?php echo Mage::getStoreConfig('masterpass/config/buttonsize'); ?>.png"/>
+
+                                <?php } else { ?>
+                                    <a href="#" onclick="handleCheckoutWithMasterpass()" title="Buy With MasterPass">
+                                        <img src="https://www.mastercard.com/mc_us/wallet/img/mcpp_wllt_btn_chk_<?php echo Mage::getStoreConfig('masterpass/config/buttonsize'); ?>.png"/>
+                                    </a>
+                                <?php } ?>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="input-box">
+                                <?php if (Mage::getStoreConfig('masterpass/config/enabledlearnmore')): ?>
+                                    <label style="font-weight: 500;">
+                                        <?php echo Mage::getStoreConfig('masterpass/config/learnmoremasterpasslink'); ?>
+                                    </label>
+                                <?php endif ?>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <?php if (Mage::getStoreConfig('masterpass/config/userflows') == '3') { ?>
+                </form>
+
+                <script type="text/javascript" language="Javascript">
+                    //<![CDATA[
+                    var mpForm = new VarienForm('mpForm', true);
+
+                    //]]>
+                </script>
+            </div>
+        <?php } ?>
+    </div>
+    <?php
+    if (Mage::getStoreConfig('masterpass/config/userflows') == '2') {
+        $prefix = '';
+        if (Mage::getStoreConfig('masterpass/config/environment') === 'sandbox') {
+            $prefix .= Mage::getStoreConfig('masterpass/config/environment') . ".";
+        }
+        ?>
+        <script type="text/javascript" src="https://<?php echo $prefix; ?>masterpass.com/lightbox/Switch/integration/MasterPass.client.js"></script>
+    <?php } ?>
+    <?php if (Mage::getStoreConfig('masterpass/config/userflows') == '2' || Mage::getStoreConfig('masterpass/config/userflows') == '3') { ?>
+        <script type="text/javascript" language="Javascript">
+                    //<![CDATA[
+
+
+                    // credit card
+                    var c = document.getElementById("cardSelect");
+                    var cardId = c.options[c.selectedIndex].getAttribute("detail");
+
+                    document.getElementById("selected-card").innerHTML = cardId;
+                    document.getElementById("cardSelect").onchange = function () {
+                        var c = document.getElementById("cardSelect");
+                        var cardId = c.options[c.selectedIndex].getAttribute("detail");
+                        document.getElementById("selected-card").innerHTML = cardId;
+                    }
+
+        <?php if ($shippingAddresses) { ?>
+                        //address
+
+                        var ad = document.getElementById("addressSelect");
+                        var addressId = ad.options[ad.selectedIndex].getAttribute("detail");
+                        window.onload = function () {
+                            document.getElementById("shipping-method").innerHTML = '<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"/>';
+
+                            var ad = document.getElementById("addressSelect");
+                            var address = ad.options[ad.selectedIndex].getAttribute("detail");
+                            document.getElementById("selected-address").innerHTML = address;
+                            var addressid = ad.options[ad.selectedIndex].value;
+                            var reloadurl = '<?php echo $this->getUrl('masterpass/masterpasspairing/saveshipping') ?>';
+
+                            new Ajax.Request(reloadurl, {
+                                method: 'post',
+                                parameters: {addressid: addressid},
+                                onSuccess: successFunc
+                            });
+                        }
+                        document.getElementById("selected-address").innerHTML = addressId;
+                        document.getElementById("addressSelect").onchange = function () {
+                            document.getElementById("shipping-method").innerHTML = '<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"/>';
+                            document.getElementById("items-review").innerHTML = '<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"/>';
+                            var ad = document.getElementById("addressSelect");
+                            var address = ad.options[ad.selectedIndex].getAttribute("detail");
+                            document.getElementById("selected-address").innerHTML = address;
+                            var addressid = ad.options[ad.selectedIndex].value;
+                            var reloadurl = '<?php echo $this->getUrl('masterpass/masterpasspairing/saveshipping') ?>';
+
+                            new Ajax.Request(reloadurl, {
+                                method: 'post',
+                                parameters: {addressid: addressid},
+                                onSuccess: successFunc
+                            });
+
+                        }
+        <?php } else { // if no address      ?>
+                        document.getElementById("shipping:country_id").onchange = function () {
+                            getShippingMethods();
+                        }
+                        document.getElementById("shipping:postcode").onblur = function () {
+                            getShippingMethods();
+                        }
+                        document.getElementById("shipping:city").onblur = function () {
+                            getShippingMethods();
+                        }
+                        document.getElementById("shipping:region").onblur = function () {
+                            getShippingMethods();
+                        }
+                        document.getElementById("shipping:region_id").onchange = function () {
+                            getShippingMethods();
+                        }
+                        function getShippingMethods() {
+                            document.getElementById("shipping-method").innerHTML = '<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"/>';
+                            var countryid = document.getElementById('shipping:country_id').value;
+                            var zipcode = document.getElementById('shipping:postcode').value;
+                            var city = document.getElementById('shipping:city').value;
+                            var regionid = document.getElementById('shipping:region_id').value;
+                            var region = document.getElementById('shipping:region').value;
+                            var url = '<?php echo $this->getUrl('masterpass/masterpasspairing/availableshipping') ?>';
+
+                            new Ajax.Request(url, {
+                                method: 'post',
+                                parameters: {country_id: countryid, postcode: zipcode, city: city, region_id: region, region: region},
+                                onSuccess: successFunc
+                            });
+                        }
+
+        <?php } ?>
+                    //reload shipping methods
+                    function successFunc(response) {
+                        document.getElementById("shipping-method").innerHTML = response.responseText;
+                        review();
+                    }
+                    //reload review 
+                    function review() {
+                        var reviewurl = '<?php echo $this->getUrl('masterpass/masterpasspairing/review') ?>';
+                        new Ajax.Request(reviewurl, {
+                            onSuccess: function (response) {
+                                document.getElementById("items-review").innerHTML = response.responseText;
+                            }
+                        });
+                    }
+                    //update shipping method
+                    function updateShippingMethod(method) {
+
+                        document.getElementById("items-review").innerHTML = '<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"/>';
+                        var reloadurl = '<?php echo $this->getUrl('masterpass/masterpasspairing/saveshippingmethod') ?>';
+
+                        new Ajax.Request(reloadurl, {
+                            method: 'post',
+                            parameters: {shippingmethod: method},
+                            onSuccess: reloadshippingmethod
+                        });
+                    }
+                    function reloadshippingmethod(response) {
+
+                        document.getElementById("shipping-method").innerHTML = response.responseText;
+                        review();
+                    }
+                    //
+                    //reward
+        <?php if (!empty($rewardPrograms)) { ?>
+                        var rw = document.getElementById("rewardSelect");
+                        var rewardId = rw.options[rw.selectedIndex].getAttribute("detail");
+                        document.getElementById("selected-reward").innerHTML = rewardId;
+                        document.getElementById("rewardSelect").onchange = function () {
+                            var rw = document.getElementById("rewardSelect");
+                            var rewardId = rw.options[rw.selectedIndex].getAttribute("detail");
+                            document.getElementById("selected-reward").innerHTML = rewardId;
+                        }
+        <?php } ?>
+                    //hide buy with masterpass button after click
+                    // if connected checkout is enabled also execut this function
+                    function disableButton() {
+                        document.getElementById('expresscheckout').setAttribute("style", "display:none;");
+                        document.getElementById('please-wait').setAttribute("style", "display:block;");
+
+                    }
+        <?php if (Mage::getStoreConfig('masterpass/config/userflows') == '2') { ?>
+
+                        function handleCheckoutWithMasterpass() {
+                            //check if shipping method is checked
+                            var shippingMethod;
+            <?php if (Mage::getStoreConfig('masterpass/config/cfaddress') && $this->canbeShipped()) { ?>
+                                shippingMethod = validateForm();
+            <?php } else { ?>
+                                shippingMethod = true;
+            <?php } ?>
+                            if (shippingMethod) {
+
+            <?php
+            $data = $this->helper('masterpass')->getMerchantSettings();
+            if (Mage::getStoreConfig('masterpass/config/cfaddress')) {
+                $shippingSup = 'false';
+            } else {
+                $shippingSup = 'true';
+            }
+            ?>
+                                var token = "<?php echo $this->helper('masterpass')->postShoppingCart(); ?>";
+
+            <?php if ($cards != null) { ?>
+                                    var c = document.getElementById("cardSelect");
+                                    var cardId = c.options[c.selectedIndex].value;
+            <?php } else { ?>
+                                    var cardId = '';
+            <?php } if ($shippingAddresses != null) { ?>
+                                    var d = document.getElementById("addressSelect");
+                                    var addressId = d.options[d.selectedIndex].value;
+            <?php } else { ?>
+                                    var addressId = '';
+            <?php } if ($rewardPrograms != null) { ?>
+                                    var l = document.getElementById("rewardSelect");
+                                    var loltyprograms = l.options[l.selectedIndex].value;
+            <?php } else { ?>
+                                    var loltyprograms = '';
+            <?php } ?>
+
+                                MasterPass.client.checkout({
+                                    "requestToken": token,
+                                    "callbackUrl": "<?php echo $this->connectedCallBackUrl(); ?>",
+                                    "merchantCheckoutId": "<?php echo $data['checkout_id']; ?>",
+                                    "allowedCardTypes": ["<?php print_r($this->helper('masterpass')->acceptedCards()); ?>"],
+                                    "cardId": cardId,
+                                    "shippingId": addressId,
+                                    "precheckoutTransactionId": "<?php echo $this->getPreCheckoutTranId(); ?>",
+                                    "walletName": "<?php echo $this->getWalletName(); ?>",
+                                    "consumerWalletId": "<?php echo $this->getConWalletId(); ?>",
+                                    "loyaltyEnabled": "<?php echo $data['loyaltyEnabled']; ?>",
+                                    "allowedLoyaltyPrograms": loltyprograms,
+                                    "version": "<?php echo $data['version']; ?>"
+
+                                }
+                                );
+                            } else {
+                                //if shipping is not checked 
+                                document.getElementById('required-shipping').setAttribute("style", "display:block;");
+                            }
+                        }
+
+                        //validat shipping method
+                        function validateForm() {
+                            var radios = document.getElementsByName("shipping_method");
+                            var formValid = false;
+
+                            var i = 0;
+                            while (!formValid && i < radios.length) {
+                                if (radios[i].checked)
+                                    formValid = true;
+                                i++;
+                            }
+                            return formValid;
+                        }
+        <?php } //end if        ?>
+
+
+                    //]]>
+        </script>
+    <?php } ?>
+<?php } else { // if longaccesstoken expired then repair masterpass wallet?>
+    <?php
+    $prefix = '';
+    if (Mage::getStoreConfig('masterpass/config/environment') === 'sandbox') {
+        $prefix .= Mage::getStoreConfig('masterpass/config/environment') . ".";
+    }
+    ?>
+    <h1><?php echo $this->__('Please repair your MasterPass Wallet') ?></h1>
+    <div class="preCheckou-main">
+        <a href="#" title="Connect With MasterPass" onclick="repairWallet()">
+            <img src="https://www.mastercard.com/mc_us/wallet/img/en/US/mp_connect_with_button_042px.png"/>
+        </a>
+        <?php if (Mage::getStoreConfig('masterpass/config/enabledlearnmore')): ?>
+            <?php echo Mage::getStoreConfig('masterpass/config/learnmoremasterpasslink'); ?>
+        <?php endif ?>
+    </div>
+    <script type="text/javascript" src="https://<?php echo $prefix; ?>masterpass.com/lightbox/Switch/integration/MasterPass.client.js"></script>
+    <script type="text/javascript">
+            //<![CDATA[
+            window.onload = function () {
+                repairWallet();
+            }
+    <?php $data = $this->helper('masterpass')->getMerchantSettings(); ?>
+            function repairWallet() {
+                var pairingToken = "<?php echo Mage::helper('masterpass')->postMerchantInitData(); ?>";
+                MasterPass.client.connect({
+                    "callbackUrl": "<?php echo Mage::getUrl('', array('_secure' => true)) . "masterpass/index/expresscallback"; ?>",
+                    "pairingRequestToken": pairingToken,
+                    "requestExpressCheckout": <?php echo Mage::helper('masterpass')->requestExpressCheckout(); ?>,
+                    "requestedDataTypes": "<?php echo Mage::helper('masterpass')->pairingDataTypes(); ?>",
+                    "merchantCheckoutId": "<?php echo $data['checkout_id']; ?>",
+                    "allowedCardTypes": ["<?php print_r($this->helper('masterpass')->acceptedCards()); ?>"],
+                    "suppressShippingAddressEnable": "<?php echo $data['suppressShipping']; ?>",
+                    "requestPairing": true,
+                    "version": "<?php echo $data['version']; ?>"
+                });
+            }
+            //]]>
+    </script>
+<?php } ?>

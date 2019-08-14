@@ -1,0 +1,492 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <masterpass translate="">
+            <label>MasterPass</label>
+            <tab>general</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <config translate="label">
+                    <label>MasterPass</label>
+                    <frontend_type>text</frontend_type>
+                    <comment>
+                        <![CDATA[<img src="https://www.mastercard.com/mc_us/wallet/img/en/US/mp_acc_076px_gif.gif" alt="Checkout with MasterPass Button Example"
+            /><br/><a href="https://masterpass.com/SP/Merchant/Home" target="_blank">Signup for MasterPass</a>]]>
+                    </comment>
+                    <expanded>1</expanded>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <!-- New fields go here -->
+                        <enabled translate="label comment">
+                            <label>Enable MasterPass Wallet</label>
+                            <comment>
+                <![CDATA[Enable or Disable option]]>
+                            </comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <notification_email translate="label comment tooltip">
+                            <label>Notification Email Address</label>
+                            <comment><![CDATA[If a private key execuatable path is not entered, a notification will be sent to the above email address.]]></comment>
+                            <tooltip><![CDATA[If a private key execuatable path is not entered, a notification will be sent to the above email address.]]></tooltip>                           
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                            <validate>validate-email</validate>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </notification_email>
+                        <buttonsize translate="label comment">
+                            <label>MasterPass Button Size</label>
+                            <comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_buttonsize</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </buttonsize>
+                        <acceptancemark translate="label comment">
+                            <label>Acceptance Marks</label>
+                            <comment><![CDATA[MasterPass Acceptance Marks Image will be displayed on the order confirmation page]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_acceptancemarksize</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </acceptancemark>
+                        <masterpassxml translate="label comment">
+                            <label>MasterPass API Version</label>
+                            <comment><![CDATA[XML Version]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_xmlversion</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </masterpassxml>
+                        <environment translate="label comment">
+                            <label>Environment</label>
+                            <comment><![CDATA[Sandbox/Production]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_environment</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </environment>
+                        <sbconsumerkey translate="label comment">
+                            <label>Sandbox Consumer Key</label>
+                            <comment><![CDATA[Retrieve from the Merchant Portal]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>sandbox</environment>
+                            </depends>
+                        </sbconsumerkey>
+                        <sbcheckoutidentifier translate="label comment">
+                            <label>Sandbox Checkout Identifier</label>
+                            <comment><![CDATA[Retrieve from the Merchant Portal]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>sandbox</environment>
+                            </depends>
+                        </sbcheckoutidentifier>
+                        <sbkeystorepath translate="label">
+                            <label>Sandbox Keystore File</label>
+                            <comment><![CDATA[Keystore Certificate File saved in
+                                {magento_root}/shell/certs]]>
+                            </comment>
+                            <frontend_type>file</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_file</backend_model>
+                            <upload_dir>shell/certs</upload_dir>
+                            <sort_order>125</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>sandbox</environment>
+                            </depends>
+                        </sbkeystorepath>
+                        <sbkeystorepassword translate="label comment">
+                            <label>Sandbox Private Key Executable Path</label>
+                            <comment><![CDATA[Example: /var/www/privatekey.sh]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>sandbox</environment>
+                            </depends>
+                        </sbkeystorepassword>
+                        <prconsumerkey translate="label comment">
+                            <label>Production Consumer Key</label>
+                            <comment>Retrieve from the Merchant Portal</comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>production</environment>
+                            </depends>
+                        </prconsumerkey>
+                        <prcheckoutidentifier translate="label comment">
+                            <label>Production Checkout Identifier</label>
+                            <comment><![CDATA[Retrieve from the Merchant Portal]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>production</environment>
+                            </depends>
+                        </prcheckoutidentifier>
+                        <prkeystorepath translate="label">
+                            <label>Production Keystore File</label>
+                            <comment><![CDATA[Keystore Certificate File saved in
+                                {magento_root}/shell/certs]]>
+                            </comment>
+                            <frontend_type>file</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_file</backend_model>
+                            <upload_dir>shell/certs</upload_dir>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>production</environment>
+                            </depends>
+                        </prkeystorepath>
+                        <prkeystorepassword translate="label comment">
+                            <label>Production Private Key Executable Path</label>
+                            <comment><![CDATA[Example: /var/www/privatekey.sh]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>135</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <environment>production</environment>
+                            </depends>
+                        </prkeystorepassword>
+                        
+                      
+                        <callbackurl translate="label comment">
+                            <label>Call Back Url</label>
+                            <comment><![CDATA[Note: THIS FIELD IS FOR CUSTOM CALL BACK ONLY. To use default call back url this field must be blank. Example: http://yoursite.com/call back path]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </callbackurl>
+                        <paymentgateway translate="label">
+                            <label>Payment Gateway</label>
+                            <comment><![CDATA[The payment gateway used to process transactions using MasterPass Wallet. Must support the accepted cards chosen below, and must not require credit card validation.]]></comment>
+                            <tooltip><![CDATA[If your payment gateway is not showing up, please check if it supports credit cards and that it is set to not require credit card validation.]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <frontend_class>validate-select</frontend_class>
+                            <source_model>masterpass/system_config_source_paymentGateways</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                               
+                            </depends>
+                        </paymentgateway>
+                        <userflows translate="label comment tooltip">
+                            <label>User Flows</label>
+                            <comment></comment>
+                            <tooltip><![CDATA[Select the Checkout, Standard, or Express Checkout to begin checkout with Masterpass.]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_userflows</source_model>
+                            <sort_order>155</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </userflows>
+                        <expressrequirement translate="label comment">      
+                            <label>blank</label>                    
+                            <comment><![CDATA[Please note: To use Express Checkout, merchant must obtain approval from MasterCard.  Express checkout will not be activated unless merchant satisfies MasterCard requirements for Express Checkout merchants. To get started, <a href="https://masterpass.com/express/form" target="_blank">Click Here!</a>]]></comment> 
+                            <frontend_type>hidden</frontend_type>                     
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows>3</userflows>
+                            </depends>
+                        </expressrequirement>
+                        <cfcard translate="label comment">
+                            <label>Credit Card</label>
+                            <comment><![CDATA[Credit Card]]></comment>
+                            <frontend_type>select</frontend_type> 
+                            <source_model>adminhtml/system_config_source_yesno</source_model>                         
+                            <sort_order>165</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows separator=",">2,3</userflows>
+                            </depends>
+                        </cfcard>
+                        <cfprofile translate="label comment">
+                            <label>Profile</label>
+                            <comment><![CDATA[Profile]]></comment>
+                            <frontend_type>select</frontend_type> 
+                            <source_model>adminhtml/system_config_source_yesno</source_model>                         
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows separator=",">2,3</userflows>
+                            </depends>
+                        </cfprofile>
+                        <cfaddress translate="label comment">
+                            <label>Address</label>
+                            <comment><![CDATA[address]]></comment>
+                            <frontend_type>select</frontend_type> 
+                            <source_model>adminhtml/system_config_source_yesno</source_model>                         
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows separator=",">2,3</userflows>
+                               
+                            </depends>
+                        </cfaddress>
+                        
+                        <!-- express checkout -->
+                        
+                       
+                        <exreward translate="label comment">
+                            <label>Reward</label>
+                            <comment><![CDATA[Reward]]></comment>
+                            <frontend_type>select</frontend_type> 
+                            <source_model>adminhtml/system_config_source_yesno</source_model>                         
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows separator=",">2,3</userflows>
+                            </depends>
+                        </exreward>                        
+                        <shippingsuppression translate="label comment">
+                            <label>Shipping Suppression</label>
+                            <comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_trueorfalse</source_model>
+                            <sort_order>260</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>                            
+                            </depends>
+                        </shippingsuppression>
+                        <rewards translate="label comment">
+                            <label>Rewards Program</label>
+                            <comment><![CDATA[By default it is "false".]]></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_trueorfalse</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows>1</userflows>
+                            </depends>
+                        </rewards>
+                        <loyaltyprogram translate="label comment">
+                            <label>Loyalty Program</label>
+                            <comment><![CDATA[Please use comma to separate each program. EX: 12345,45678]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>280</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <rewards>true</rewards>
+                            </depends>
+                        </loyaltyprogram>
+                        <requestbasiccheckout translate="label comment">
+                            <label>Request Basic Checkout</label>
+                            <comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>masterpass/system_config_source_trueorfalse</source_model>
+                            <sort_order>290</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows>1</userflows>
+                            </depends>
+                        </requestbasiccheckout>
+                        <acceptedcards translate="label comment">
+                            <label>Accepted Credit Cards</label>
+                            <comment></comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>masterpass/system_config_source_acceptedcards</source_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows>1</userflows>
+                            </depends>
+                        </acceptedcards>
+                        <privatelabel translate="label comment">
+                            <label>Private Label Card</label>
+                            <comment><![CDATA[Empty by default. NOTE: THE PRIVATE LABEL IS CASE SENSITIVE. THE VALUE IN THIS FIELD MUST MATCH THE VALUE COMING FROM MasterPass.]]></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <userflows>1</userflows>
+                            </depends>
+                        </privatelabel>
+                        <checkouterrormessage translate="label comment">
+                            <label>Generic Checkout Error Message</label>
+                            <comment></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>320</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </checkouterrormessage>
+                        <enabledlearnmore translate="label comment">
+                            <label>Enable Learn More Link</label>                          
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>330</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </enabledlearnmore>
+                        <learnmoremasterpasslink translate="label comment">
+                            <label>Learn More Link</label>
+                            <sort_order>340</sort_order>
+                            <frontend_type>textarea</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <shared>1</shared>
+                            <depends>
+                                <enabled>1</enabled>
+                                <enabledlearnmore>1</enabledlearnmore>
+                            </depends>
+                            <comment>
+                                <![CDATA[This message will be displayed on the shopping cart page below the "BUY WITH MasterPass" button.]]>                               
+                            </comment>
+                        </learnmoremasterpasslink>
+                    </fields>
+                </config>
+            </groups>
+        </masterpass>
+    </sections>
+</config>

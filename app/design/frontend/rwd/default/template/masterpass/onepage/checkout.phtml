@@ -1,0 +1,96 @@
+<?php
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+?>
+
+<?php if (!$this->getQuote()->isVirtual()): ?>
+    <div class="mp-complete">
+        <h3 class="mp-title"><?php echo $this->__('Shipping Address') ?></h3>
+        <?php if($this->getShipping()->getFirstname()!=''){ ?>
+            <address><?php echo $this->getShipping()->format('html') ?></address>
+        
+            <span class="changelink">
+                <a onclick="updateShipping();" href="#">Change</a>
+            </span>
+        <?php } ?>
+        <?php echo $this->getChildHtml("standshippingform"); ?>
+    </div>
+<?php endif; ?>
+<form id="mpForm" method="post" action="<?php echo $this->getMasterpasscheckoutUrl(); ?>">
+    <?php if (!$this->getQuote()->isVirtual()): ?>
+        <div class="mp-complete">
+            <?php echo $this->getChildHtml("mpshippingmethod"); ?>
+        </div>
+    <?php endif; ?>
+    <div class="mp-complete">
+        <h3 class="mp-title"><?php echo $this->__('Billing Address') ?></h3>
+        <address><?php echo $this->getBilling()->format('html') ?></address>
+    </div>
+    <div class="payment-info">
+        <h3 class="mp-title"><?php echo $this->__('Payment') ?></h3>
+        <img class="masterpass-logo" src="https://www.mastercard.com/mc_us/wallet/img/en/US/mp_mc_acc_<?php echo Mage::getStoreConfig('masterpass/config/acceptancemark') ?>_gif.gif" alt=" MasterPass Checkout"/>
+        <?php $card = Mage::getSingleton('checkout/session')->getCardMask(); ?>
+
+        <ul class="mp-complete">
+            <li><?php echo $this->__('Credit Card Type: ') ?><?php echo $card['cardType']; ?></li>
+            <li><?php echo $this->__('Credit Card Number: ') ?>xxxx-<?php echo $card['last4']; ?></li>
+            <?php if($card['expiryMonth'] && $card['expiryYear']){ ?>
+            <li><?php echo $this->__('Expiration Date: ') ?><?php echo $card['expiryMonth'] . '/' . $card['expiryYear']; ?></li>
+            <?php } ?>
+            <li><?php echo $this->__('Name on the Card: ') ?><?php echo $card['cardHolder']; ?></li>
+           <?php if($card['RewardProgram']){ ?>
+            <li><b><?php echo $this->__('Reward Card') ?></b></li>
+            <li><?php echo $this->__('Reward Name: ') ?><?php echo $card['RewardProgram']['RewardName']; ?></li>
+            <li><?php echo $this->__('Reward Number: ') ?><?php echo $card['RewardProgram']['RewardNumber']; ?></li>
+           <?php } ?>
+        </ul>
+    </div>
+    <?php echo $this->getChildHtml("orderdetails"); ?>
+    <ul class="masterpass-checkout-block">
+        <li>
+          <button id="masterpass-checkout" class="button mp-checkout-button" value="Update Total" name="do" title="submit order" type="submit">
+                    <span>
+                        <span>Submit Order</span>
+                    </span>
+                </button>
+                <span class="please-wait" id="please-wait" style="display:none;">
+                    <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading...') ?>" title="<?php echo $this->__('Loading...') ?>" class="v-middle" /> <?php echo $this->__('Loading...') ?>
+                </span>   
+        </li>
+    </ul>
+</form>
+
+
+<script type="text/javascript" language="Javascript">
+    //<![CDATA[
+    var mpForm = new VarienForm('mpForm', true);
+    //update shipping method
+    function updateShippingMethod(method) {
+        document.getElementById('masterpass-checkout').setAttribute("style", "display:none;");
+        document.getElementById('please-wait').setAttribute("style", "display:block;");
+        document.getElementById("items-review").innerHTML = '<img style="margin:auto;" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"/>';
+        var reloadurl = '<?php echo $this->getUrl('masterpass/index/saveshippingmethod') ?>';
+
+        new Ajax.Request(reloadurl, {
+            method: 'post',
+            parameters: {shippingmethod: method},
+            onSuccess: review
+        });
+    }
+   
+    //reload review 
+    function review() {
+        document.getElementById('masterpass-checkout').setAttribute("style", "display:block;");
+        document.getElementById('please-wait').setAttribute("style", "display:none;");
+        var reviewurl = '<?php echo $this->getUrl('masterpass/index/review') ?>';
+        new Ajax.Request(reviewurl, {
+            onSuccess: function (response) {
+                document.getElementById("items-review").innerHTML = response.responseText;
+            }
+        });
+    }
+    //]]>
+</script>

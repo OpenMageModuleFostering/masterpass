@@ -1,0 +1,127 @@
+<div>	
+    <h3 class="mp-title"><?php echo $this->__('Shipping Address') ?></h3>
+    <ul class="form-list">
+
+        <li id="shipping-new-address-form">
+            <fieldset>
+                <ul>
+                    <li class="fields">
+                        <div class="customer-name">
+                            <div class="shipping-field name-firstname">
+                                <label class="required" for="shipping:firstname">
+                                    <em>*</em>
+                                    First Name
+                                </label>
+                                <div class="input-box">
+                                    <input id="shipping:firstname" class="input-text required-entry" type="text" maxlength="255" title="First Name" value="" name="shipping[firstname]">
+                                </div>
+                            </div>
+                            <div class="shipping-field name-lastname">
+                                <label class="required" for="shipping:lastname">
+                                    <em>*</em>
+                                    Last Name
+                                </label>
+                                <div class="input-box">
+                                    <input id="shipping:lastname" class="input-text required-entry" type="text" maxlength="255" title="Last Name" value="" name="shipping[lastname]">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="shipping-field">
+                            <label for="shipping:company">Company</label>
+                            <div class="input-box">
+                                <input id="shipping:company" class="input-text " type="text" title="Company" value="" name="shipping[company]">
+                            </div>
+                        </div>
+                        <div class="shipping-field">
+                           
+                            
+                        </div>
+                    </li>
+                    <li class="shipping-wide">
+                        <label class="required" for="shipping:street1">
+                            <em>*</em>
+                            Address
+                        </label>
+                        <div class="input-box">
+                            <input id="shipping:street1" class="input-text required-entry shipping-address" type="text" value="" name="shipping[street][]" title="Street Address">
+                        </div>
+                    </li>
+                    <li class="shipping-wide">
+                        <div class="input-box">
+                            <input id="shipping:street2" class="input-text shipping-address" type="text" value="" name="shipping[street][]" title="Street Address 2">
+                        </div>
+                    </li>
+
+                    <li class="fields">
+                        <div class="shipping-field">
+                            <label class="required" for="shipping:city">
+                                <em>*</em>
+                                City
+                            </label>
+                            <div class="input-box">
+                                <input id="shipping:city" class="input-text required-entry" type="text" value="" name="shipping[city]" title="City">
+                            </div>
+                        </div>
+                        <div class="shipping-field select-shipping">
+                            <label for="shipping:region" class="required"><em>*</em><?php echo $this->__('State/Province') ?></label>
+                            <div class="input-box">
+                                <select id="shipping:region_id" name="shipping[region_id]" title="<?php echo $this->__('State/Province') ?>" class="validate-select" style="display:none;">
+                                    <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                                </select>
+                                <script type="text/javascript">
+                                    //<![CDATA[
+                                    $('shipping:region_id').setAttribute('defaultValue', "<?php echo $this->getAddress()->getRegionId() ?>");
+                                    //]]>
+                                </script>
+                                <input type="text" id="shipping:region" name="shipping[region]" value="" title="<?php echo $this->__('State/Province') ?>" class="input-text" style="display:none;" />
+                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="shipping-field">
+                            <label class="required" for="shipping:postcode">
+                                <em>*</em>
+                                Zip/Postal Code
+                            </label>
+                            <div class="input-box">
+                                <input id="shipping:postcode" class="input-text validate-zip-international required-entry" type="text" value="" name="shipping[postcode]" title="Zip/Postal Code">
+                            </div>
+                        </div>
+                        <div class="shipping-field select-shipping">
+                            <label for="shipping:country_id" class="required"><em>*</em><?php echo $this->__('Country') ?></label>
+                            <div class="input-box">
+                                <?php echo $this->getCountryHtmlSelect('shipping') ?>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="fields">
+                        <div class="shipping-field">
+                            <label class="required" for="shipping:telephone">
+                                <em>*</em>
+                                Telephone
+                            </label>
+                            <div class="input-box">
+                                <input id="shipping:telephone" class="input-text required-entry" type="text" title="Telephone" value="" name="shipping[telephone]">
+                            </div>
+                        </div>
+                        <div class="shipping-field">
+                            <label for="shipping:fax">Fax</label>
+                            <div class="input-box">
+                                <input id="shipping:fax" class="input-text " type="text" title="Fax" value="" name="shipping[fax]">
+                            </div>
+                        </div>
+                    </li>
+      
+            </fieldset>
+        </li>
+
+    </ul>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        var shippingRegionUpdater = new RegionUpdater('shipping:country_id', 'shipping:region', 'shipping:region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'shipping:postcode');
+        //]]>
+    </script>
+</div>

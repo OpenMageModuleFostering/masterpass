@@ -1,0 +1,75 @@
+<?php $isMasterpassEnabled = Mage::helper('masterpass')->isMasterpassEnabled(); ?>
+<?php if ($isMasterpassEnabled): ?>
+    <?php if (!$this->checkUserFlows()): ?>
+
+        <?php
+        $prefix = '';
+        if (Mage::getStoreConfig('masterpass/config/environment') === 'sandbox') {
+            $prefix .= Mage::getStoreConfig('masterpass/config/environment') . ".";
+        }
+        ?>
+
+
+        <script type="text/javascript" src="https://<?php echo $prefix; ?>masterpass.com/lightbox/Switch/integration/MasterPass.client.js"></script>
+
+        <div>
+            <a href="#"  onclick="handleBuyWithMasterPass()" title="Buy With MasterPass"><img src="https://www.mastercard.com/mc_us/wallet/img/mcpp_wllt_btn_chk_<?php echo Mage::getStoreConfig('masterpass/config/buttonsize'); ?>.png"/></a>
+        </div>
+
+        <?php if (Mage::getStoreConfig('masterpass/config/enabledlearnmore')): ?>
+            <div style="padding-left: 22px;">
+                <?php echo Mage::getStoreConfig('masterpass/config/learnmoremasterpasslink'); ?>
+            </div>
+        <?php endif ?>
+
+
+        <script>
+
+                    function handleBuyWithMasterPass() {
+                    //check if privatekey path is not empty
+                    var response;
+                            new Ajax.Request('<?php echo $this->getUrl() . 'masterpass/index/validatePk'; ?>',
+                            {
+                            method:'get',
+                                    onSuccess: function(transport){
+                                    response = transport.responseText;
+                                            if (response != ''){
+        <?php $data = $this->helper('masterpass')->getMerchantSettings(); ?>
+                                    var token = "<?php print_r($this->helper('masterpass')->postShoppingCart()); ?>";
+                                            if (token != ''){
+                                    MasterPass.client.checkout({
+                                    "requestToken":token,
+        <?php if (Mage::getStoreConfig('masterpass/config/callbackurl') != '') { ?>
+                                        "callbackUrl":"<?php echo Mage::getStoreConfig('masterpass/config/callbackurl'); ?>",
+        <?php } else { ?>
+                                        "callbackUrl":"<?php echo $this->getUrl() . 'masterpass/index/callback'; ?>",
+        <?php } ?>
+                                    "merchantCheckoutId":"<?php echo $data['checkout_id']; ?>",
+                                            "allowedCardTypes":"<?php print_r($this->helper('masterpass')->acceptedCards()); ?>",
+                                            "cancelCallback" : "<?php echo $this->getUrl(); ?>",
+                                            "suppressShippingAddressEnable": "<?php echo $data['suppressShipping']; ?>",
+                                            "loyaltyEnabled" : "<?php echo $data['loyaltyEnabled']; ?>",
+        <?php if ($data['loyaltyEnabled'] == 'true') { ?>
+                                        "allowedLoyaltyPrograms" : "<?php echo $data['loyaltyProgram']; ?>",
+        <?php } ?>
+                                    "requestBasicCheckout" : "<?php echo $data['requestBasicCheckout']; ?>",
+                                            "version":"<?php echo $data['version']; ?>"
+                                    });
+                                    } else{
+                                    window.location.href = '<?php echo Mage::getUrl('', array('_secure' => true)); ?>masterpass/index/callback';
+                                    }
+                                    } else{
+                                    location.reload();
+                                    }
+                                    },
+                                    onFailure: function(){
+                                    location.reload();
+                                    }
+                            });
+                    }
+
+
+        </script>
+    <?php endif; ?>
+<?php endif; ?>
+

@@ -1,0 +1,12 @@
+<?php $isMasterpassEnabled = Mage::helper('masterpass')->isMasterpassEnabled(); ?>
+<?php if ($isMasterpassEnabled && !$this->checkUserFlows()): ?>
+    <div>
+        <a href="#"  onclick="handleBuyWithMasterPass()" title="Buy With MasterPass"><img src="https://www.mastercard.com/mc_us/wallet/img/mcpp_wllt_btn_chk_<?php echo Mage::getStoreConfig('masterpass/config/buttonsize'); ?>.png"/></a>
+    </div>
+
+    <?php if (Mage::getStoreConfig('masterpass/config/enabledlearnmore')): ?>
+        <?php echo Mage::getStoreConfig('masterpass/config/learnmoremasterpasslink'); ?>
+    <?php endif; ?>
+<?php endif; ?>
+
+

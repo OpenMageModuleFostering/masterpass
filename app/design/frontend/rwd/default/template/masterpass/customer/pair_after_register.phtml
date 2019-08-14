@@ -1,0 +1,65 @@
+<?php
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+?>
+<?php $isMasterpassEnabled = Mage::helper('masterpass')->isMasterpassEnabled(); ?>
+<?php if ($isMasterpassEnabled): ?>
+    <?php if (Mage::helper('masterpass')->isExpressEnabled()): ?>
+        <?php if (!$this->isWalletPaired()): ?>
+            <div class="dashboard" style="overflow: hidden;">
+                <h3><?php echo $this->__('Pairing With MasterPass Wallet') ?></h3>
+                <ul class="messages">
+                    <li class="erro-msg">
+                        <ul>
+                            <li>
+                                <span style="color: red;">Connect your MasterPass wallet and checkout faster!  Simply click on the Connect with MasterPass button below</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <?php $pairinData = $this->pairingData(); ?>
+
+                <?php if ($this->getPairingButton()): ?>
+                    <a href="#" title="Connect With MasterPass" onclick="connectWithMasterPass()">
+                        <img src="https://www.mastercard.com/mc_us/wallet/img/en/US/mp_connect_with_button_042px.png"/>
+                    </a>
+                    <?php if (Mage::getStoreConfig('masterpass/config/enabledlearnmore')): ?>
+                        <div><?php echo Mage::getStoreConfig('masterpass/config/learnmoremasterpasslink'); ?></div>
+                    <?php endif ?>
+                    <?php
+                    $prefix = '';
+                    if (Mage::getStoreConfig('masterpass/config/environment') === 'sandbox') {
+                        $prefix .= Mage::getStoreConfig('masterpass/config/environment') . ".";
+                    }
+                    ?>
+                    <script type="text/javascript" src="https://<?php echo $prefix; ?>masterpass.com/lightbox/Switch/integration/MasterPass.client.js"></script>
+                    <script type="text/javascript">
+                        //<![CDATA[
+                <?php $data = $this->helper('masterpass')->getMerchantSettings(); ?>
+                        function connectWithMasterPass() {
+                            var pairingToken = "<?php echo Mage::helper('masterpass')->postMerchantInitData(); ?>";
+                            MasterPass.client.connect({
+                                "callbackUrl": "<?php echo $this->pairingcallbackUrl(); ?>",
+                                "pairingRequestToken": pairingToken,
+                                "requestExpressCheckout": <?php echo Mage::helper('masterpass')->requestExpressCheckout(); ?>,
+                                "requestedDataTypes": "<?php echo Mage::helper('masterpass')->pairingDataTypes(); ?>",
+                                "merchantCheckoutId": "<?php echo $data['checkout_id']; ?>",
+                                "allowedCardTypes": ["<?php print_r($this->helper('masterpass')->acceptedCards()); ?>"],
+                                "suppressShippingAddressEnable": "<?php echo $data['suppressShipping']; ?>",
+                                "requestPairing": true,
+                                "version": "<?php echo $data['version']; ?>"
+                            });
+                        }
+                        //]]>
+                    </script>
+
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endif; ?>

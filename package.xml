@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<package>
+    <name>MasterPass</name>
+    <version>1.0.0</version>
+    <stability>stable</stability>
+    <license>OSL</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>The MasterPass extension by MasterCard enables you to easily embed MasterPass checkout capability into your online shopping site, helping to streamline the payment process for your customers without changing the way you currently process payments.</summary>
+    <description>Overview:&#xD;
+ &#xD;
+One checkout button. Many wallets.&#xD;
+&#xD;
+MasterPass&#x2122;  gives your customers a quick, easy, and secure way to check out and gives you access to a world of digital wallets through a single button on your checkout page.&#xD;
+ &#xD;
+ MasterPass is a global digital platform that enables &#x201C;in context&#x201D; shopping experiences by powering a network of digital wallets that can all be accessed through the global MasterPass acceptance Network - Powered by the Buy with MasterPass button.&#xD;
+ &#xD;
+Each digital wallet stores the cardholder&#x2019;s payment and shipping information, including certain private label and loyalty cards, in one convenient and secure place&#xD;
+ &#xD;
+How You May Benefit:&#xD;
+ &#xD;
+&#xBB;&#xBB; One button, many trusted wallets: behind the MasterPass button on the checkout page are many bank-issued wallets, connecting merchants to more&#xD;
+consumer-trusted wallets compared to any other digital payment solution.&#xD;
+ &#xD;
+&#xBB;&#xBB; Conversion: because it requires less typing and remembers consumer preferences, MasterPass makes checkout fast and simple for consumers, reducing the risk of cart abandonment and increasing conversion and repeat visits.&#xD;
+ &#xD;
+&#xBB;&#xBB; Convenience: MasterPass is about giving customers more options and control over the way they shop and pay. Browser and in-app purchasing and, in&#xD;
+the future, the ability for customers to check out in-store with a mobile device will mean expanded opportunities for purchasing and brand interaction.&#xD;
+ &#xD;
+&#xBB;&#xBB; Trust: MasterPass keeps cardholder payment information secure in one place. It&#x2019;s designed to help customers feel confident when accessing their&#xD;
+payment information at every checkout, thereby promoting repeat usage.&#xD;
+ &#xD;
+&#xBB;&#xBB; Loyalty: MasterPass helps facilitate a consumer&#x2019;s participation in a merchant loyalty program by storing and automatically passing a consumer&#x2019;s&#xD;
+loyalty card during checkout. In addition, customer information that you capture today can also be available to you with MasterPass.&#xD;
+ &#xD;
+&#xBB;&#xBB; Speed to market: Unlike many other wallet solutions, MasterPass simply passes the card details to the merchant, so the merchant can process&#xD;
+the transaction using its normal card-processing flows. So integration with merchant systems can be completed efficiently and cost-effectively</description>
+    <notes>The MasterPass extension by MasterCard enables you to easily embed MasterPass checkout capability into your online shopping site, helping to streamline the payment process for your customers without changing the way you currently process payments.</notes>
+    <authors><author><name>MAG003284503</name><user>MAG003284503</user><email>merchant_testing_support@masterpass.com</email></author></authors>
+    <date>2016-01-25</date>
+    <time>22:22:56</time>
+    <contents><target name="magelocal"><dir name="MasterCard"><dir name="Masterpass"><dir name="Block"><file name="Button.php" hash="1a429c49c9dedb966191ff4f4c50ddc3"/><dir name="Checkout"><file name="Checkout.php" hash="6f9a462fe5d0187fd4751cca6c85f89a"/><file name="Precheckout.php" hash="a828f750d689f4d9b5222f4a1a2c6456"/><dir name="Review"><file name="Details.php" hash="790ced01b5addf9b9b24d9218fb0c33e"/></dir><file name="Shipping.php" hash="e9ea05153a63d1b4f9da9cad5d1db1f9"/></dir><dir name="Customer"><file name="Link.php" hash="e8ee7a1e3601664f8e8b8cdf44e71ef9"/><file name="Wrapper.php" hash="09dba0fcdeadceb52a90ee5441b90123"/></dir><dir name="Onepage"><file name="Link.php" hash="039f7b1ae7df8662ef227bab0549b2fb"/><file name="Links.php" hash="f3c01a14888e34603e6a57687efbdc36"/><file name="Sidebar.php" hash="ad16486774e3126a3374f99a605e8429"/></dir></dir><dir name="Helper"><file name="Data.php" hash="6921e0dd0e992d166681d0e06261dd23"/></dir><dir name="Model"><file name="Masterpass.php" hash="6ceb9129272187cb8fd7d61d3d29cff1"/><dir name="Mpservice"><file name="Connector.php" hash="52af484e28882d4d31ea7ef5184804c6"/><file name="Masterpassservice.php" hash="ec3c7ba3ce63eb418c239cd884335952"/></dir><file name="Observer.php" hash="24d4a8acbf1c5868c5ea79d2dc34650e"/><dir name="System"><dir name="Config"><dir name="Source"><file name="Acceptancemarksize.php" hash="8ec292ead3a713efe536c6c2ef9aca82"/><file name="Acceptedcards.php" hash="ebd77872c91758bf3ad2fe7adaa4adb5"/><file name="Buttonsize.php" hash="50ad6bd94312823e47f2ca818a8f7dd1"/><file name="Environment.php" hash="753ab7965b14c8377bf63db72032db0d"/><file name="PaymentGateways.php" hash="8b8273a64e7669ffb0c34f586fe50594"/><file name="Transactionurl.php" hash="74ea3cbbcde2e52a0f8f4ef305967034"/><file name="Trueorfalse.php" hash="ee4dcfae8ea6a46ff8da42a6fda18e70"/><file name="Userflows.php" hash="f790a05d192409d3c55fd1b3c18e300b"/><file name="Xmlversion.php" hash="a2cfb8fa9ee269f2515f30e9abcb23ef"/></dir></dir></dir></dir><dir name="controllers"><file name="IndexController.php" hash="6e6e1fd014f9c03c19ec65d4ee7ca891"/><file name="MasterpasspairingController.php" hash="75693680d101aeeea10fd3d2ae4e2ea7"/></dir><dir name="etc"><file name="adminhtml.xml" hash="1d2115f5d5bb06de392ea3cf515b5ebd"/><file name="config.xml" hash="c23d7ae9221538a77ea4e31da283f850"/><file name="system.xml" hash="64f644883b47f04445a75e541910d03f"/></dir><dir name="sql"><dir name="mastercard_masterpass_setup"><file name="mysql4-install-0.1.0.php" hash="38c331167583ae1d9cfa5d00ecebac20"/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="MasterCard_Masterpass.xml" hash="9c512f65a88ebaf147b31584cdfe314b"/></dir></target><target name="magedesign"><dir name="frontend"><dir name="rwd"><dir name="default"><dir name="template"><dir name="masterpass"><dir><dir name="ajax"><file name="details.phtml" hash="2a172dab4e2b54cf5517de3820157881"/><file name="shipping_method.phtml" hash="220889e5a2e98fa0d159a511de146070"/></dir><dir name="cart"><file name="button.phtml" hash="06b050207e75958d3dc518bbee1f4088"/><file name="buttonbottom.phtml" hash="58e3835a1f892162fd48a713b330a21f"/></dir><dir name="customer"><file name="pair_after_register.phtml" hash="3ed1b0865b4fa234350084c826094a7f"/><file name="wrapper.phtml" hash="fe50189f2dd952d3a3c6c5c59993144e"/></dir><dir name="onepage"><file name="checkout.phtml" hash="b875c0ed2dd5670c4cd5978e82964a11"/><file name="login.phtml" hash="d0b0ef5e915b6a1221401d939f7a2829"/><file name="shipping_form.phtml" hash="e51ccb958b7bc1bec75a297ee4c5e1d5"/><file name="success.phtml" hash="753e856de4c64e8f0e43e746692af09a"/></dir><dir name="precheckout"><file name="pairWallet.phtml" hash="e0c6635cdaef3beeb92a3b2af9e22652"/><file name="precheckout.phtml" hash="d3bcc031093714bb971185c551e795ce"/><file name="shipping.phtml" hash="f53c61d624e335e16b384fca300089ab"/><file name="shipping_method.phtml" hash="e538eeda277d26b0a9bc709ed5921a0f"/></dir><dir name="review"><file name="details.phtml" hash="9333c9fd334824ce39e016bae27a0a8e"/></dir></dir></dir></dir></dir></dir></dir></target><target name="mageskin"><dir name="frontend"><dir name="rwd"><dir name="default"><dir name="css"><dir name="masterpass"><file name="masterpassclient.css" hash="9b4bd38311398794c4dbcfd6c035f00d"/></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>
